@@ -1,60 +1,56 @@
-Ansible Playbook VyOS
-=====================
+Ansible Playbook Ubuntu Setup
+==============================
 
-This playbook is used to deploy configuration to target devices running VyOS.
+This playbook is used to deploy configuration to target devices running Ubuntu 14.04.
 
-Tested on VyOS 1.1.7, patches are welcome.
+Tested on Ubuntu 14.04 64bits, patches are welcome.
 
 ## Installation
 
 Clone this repo to your Ansible roles directory
 
-    git clone git://github.com/gregfaust/ansible-vyos.git vyos
+    git clone https://github.com/jhernandezcsc/ansible-linux-setup.git
 
-Install the role requirements using ansible-galaxy
-
-    ansible-galaxy install -r requirements.yml -p roles --force --ignore-errors --ignore-certs
 
 ## Usage
 
-The user must have root permissions in order to copy keys and set permissions.
+The user must have root permissions in order to install system packages and start services.
 
 Example Playbook:
+  ---
+  - hosts: gss-wks
+    become: yes
+    become_method: sudo
 
-     ---
-     - hosts: vyos
-       become: root
-       roles:
-         - { role: gregfaust.vyos,
-             vyos_configuration: "vyos_configurations/vyos_configuration_{{ ansible_hostname }}.j2"
-           }
-       tasks:
-         - name: install OpenVPN Key
-           copy: src="vyos_configurations/{{ ansible_hostname }}.key" dest="/config/auth/{{ ansible_hostname }}.key" owner=root group=vyattacfg mode=0775
+    roles:
+      - { role: common, tags: common }
+      - { role: teamviewer, tags: teamviewer }
 
 ## Important notes
 
-This role has been tested on a local VyOS environment using VyOS 1.1.7
+This role has been tested on a local virutal machine environment running Ubuntu 14.04 64bits
 
-This playbook assumes that the VyOS appliance is accessible via SSH (This means that the IP,
-login and ssh service need to be set).  It is a good idea to reboot the appliance after running
-this playbook for the first time to ensure that the default vyos/vyos login has been removed.
+To execute this playbook the destination PC should be accessible via SSH (This means that the IP,
+login and ssh service need to be set). Also PermitRootLogin should be added into the sshd_config file.
+It is a good idea to reboot the appliance after running this playbook for the first time to ensure 
+that the default cscadmin password has been removed.
 
-After running this playbook, you will no longer be able to make ANY local changes to the
-VyOS appliance.  Any attempt to adjust a configuration manually will result in "Set Failed".
-There should never be a reason to make local configuraiton changes manually, but if a
-situation arises that requires making local configuration changes the VyOS appliance must be
-rebooted before it will once again allow local configuration changes.
-
+After running this playbook, the workstation will be deployed with the following packages:
+  - Unetbootin
+  - openjdk 7
+  - Libreoffice 5.1
+  - Teamviewer
+  - Clamtk
+  - SFLPhone Client
+  - AdobeFlash pluggin
+  - AdobeReader
+  - It will also configure security settigns to comply with password and security policies..
+ 
 Example Playbook run:
 
 A typical run of this playbook might look like this, but could vary based on your local ~/.ssh/config and DNS.
 
-     ansible-playbook --inventory=inventory-vyos --ask-vault-pass playbook-vyos.yml
-
-## License
-
-Licensed under the GPLv3 License. See the LICENSE file for details.
+     ansible-playbook -i wks-inv --ask-vault-pass linux-setup.yml
 
 ## Contributing
 
