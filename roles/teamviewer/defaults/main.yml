@@ -3,4 +3,4 @@ tviewer_url: http://download.teamviewer.com/download/version_10x/teamviewer_i386
 
 tviewer_pwd: "!QAZxsw2"
 
-admin_user: cscadmin
+Downloads_prefix: /home/cscadmin/Downloads

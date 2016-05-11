@@ -1,29 +1,30 @@
 ---
 - name: Download Teamviwer version 10
-  get_url: url="{{ tviewer_url }}" dest="/home/{{ admin_user }}/Downloads/teamviewer_i386.deb"
+  get_url: url="{{ tviewer_url }}" dest="{{ Downloads_prefix }}/teamviewer_i386.deb"
 
 - name: Install Teamviwer
-  apt: deb="/home/{{ admin_user }}/Downloads/teamviewer_i386.deb"
+  apt: deb="{{ Downloads_prefix }}/teamviewer_i386.deb"
 
-- name: Accept TViewer License
-  shell: teamviewer license accept
+- name: Copy Tviewer script to destination system
+  copy: src=tviewer_start.sh dest="{{ Downloads_prefix }}" mode=0774 force=yes
 
-- name: Enable TViewer daemon to run
-  shell: teamviewer --daemon enable
+- name: Configure TViewer on the remote machine
+  command: "{{ Downloads_prefix }}/tviewer_start.sh"
 
-- name: Start TViewer daemon
-  shell: teamviewer –daemon start
-  become: no
+- name: Removing configuration file
+  file: "{{ Downloads_prefix }}/tviewer_start.sh" state=absent
 
-- name: Set TViwer access password
-  shell: /usr/bin/teamviewer –passwd "{{ tviewer_pwd }}"
-  become: no
+- name: reboot system
+  shell: sleep 2 && shutdown -r now "Ansible package updates triggered"
+  async: 1
+  poll: 0
+  ignore_errors: true
 
-- name: Retreive TViewer information
-  shell: teamviewer -info
-  register: tv_info
+- name: waiting for server to come back
+  local_action: wait_for port=22 host={{ inventory_hostname }} state=started
+  delegate_to: 127.0.0.1
+  sudo: false
 
-- debug: var=tv_info
 
 
 

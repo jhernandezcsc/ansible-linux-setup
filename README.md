@@ -17,6 +17,7 @@ Clone this repo to your Ansible roles directory
 The user must have root permissions in order to install system packages and start services.
 
 Example Playbook:
+```
   ---
   - hosts: gss-wks
     become: yes
@@ -25,14 +26,17 @@ Example Playbook:
     roles:
       - { role: common, tags: common }
       - { role: teamviewer, tags: teamviewer }
+```
 
 ## Important notes
 
-This role has been tested on a local virutal machine environment running Ubuntu 14.04 64bits
+This playbook has been tested on a local virutal machine environment running Ubuntu 14.04 64bits.
+Installation packages and configuration are organized in roles as instalaltion steps.
 
 To execute this playbook the destination PC should be accessible via SSH (This means that the IP,
-login and ssh service need to be set). Also PermitRootLogin should be added into the sshd_config file.
-It is a good idea to reboot the appliance after running this playbook for the first time to ensure 
+cscadmin login and ssh service need to be set). Also **PermitRootLogin** should be added into the **sshd_config**_ file.
+
+It is a good idea to reboot the appliance after running this playbook for the first time to ensure
 that the default cscadmin password has been removed.
 
 After running this playbook, the workstation will be deployed with the following packages:
@@ -44,8 +48,8 @@ After running this playbook, the workstation will be deployed with the following
   - SFLPhone Client
   - AdobeFlash pluggin
   - AdobeReader
-  - It will also configure security settigns to comply with password and security policies..
- 
+  - It will also be configured with the required security settigns to comply with password and security policies..
+
 Example Playbook run:
 
 A typical run of this playbook might look like this, but could vary based on your local ~/.ssh/config and DNS.
