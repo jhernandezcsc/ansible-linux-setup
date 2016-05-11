@@ -1,0 +1,26 @@
+---
+pkg_prerequisites:
+  - python-software-properties
+  - software-properties-common
+  - aptitude
+
+ppa_repositories:
+  - ppa:libreoffice/libreoffice-5-1
+  - ppa:savoirfairelinux
+
+system_pkgs:
+  - unetbootin
+  - openjdk-7-jdk
+  - openjdk-7-jre
+
+browser_pkgs:
+  - chromium-browser
+  - firefox
+
+softphone_pkgs:
+  - sflphone-gnome-video
+  - sflphone-plugins
+
+
+
+

@@ -1,0 +1,31 @@
+---
+- name: Download Teamviwer version 10
+  get_url: url="{{ tviewer_url }}" dest="/home/{{ admin_user }}/Downloads/teamviewer_i386.deb"
+
+- name: Install Teamviwer
+  apt: deb="/home/{{ admin_user }}/Downloads/teamviewer_i386.deb"
+
+- name: Accept TViewer License
+  shell: teamviewer license accept
+
+- name: Enable TViewer daemon to run
+  shell: teamviewer --daemon enable
+
+- name: Start TViewer daemon
+  shell: teamviewer –daemon start
+  become: no
+
+- name: Set TViwer access password
+  shell: /usr/bin/teamviewer –passwd "{{ tviewer_pwd }}"
+  become: no
+
+- name: Retreive TViewer information
+  shell: teamviewer -info
+  register: tv_info
+
+- debug: var=tv_info
+
+
+
+
+
