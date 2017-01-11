@@ -34,9 +34,12 @@ This playbook has been tested on a local virutal machine environment running Ubu
 Installation packages and configuration are organized in roles as instalaltion steps.
 
 To execute this playbook the destination PC should be accessible via SSH (This means that the IP,
-cscadmin login and ssh service need to be set). Also **PermitRootLogin** should be added into the **sshd_config**_ file.
+cscadmin login and ssh service need to be set).
 
-It is a good idea to reboot the appliance after running this playbook for the first time to ensure
+This playbook assumes the following installation files are going to be included into the files folder
+  - roles/teamviewer/files/teamviewer_i386.deb
+
+The destination hosts will be rebooted during the installation of this playbook, after the installation is finished ensure
 that the default cscadmin password has been removed.
 
 After running this playbook, the workstation will be deployed with the following packages:
@@ -54,7 +57,7 @@ Example Playbook run:
 
 A typical run of this playbook might look like this, but could vary based on your local ~/.ssh/config and DNS.
 
-     ansible-playbook -i wks-inv --ask-vault-pass linux-setup.yml
+     ansible-playbook -i wks-inv linux-setup.yml -u cscadmin -k -K
 
 ## Contributing
 

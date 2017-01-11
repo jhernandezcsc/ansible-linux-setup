@@ -1,0 +1,35 @@
+---
+# Security tasks
+
+- name: Copy login config file
+  copy: src=login.defs dest="/etc/login.defs" mode=644 force=yes
+
+- name: Install libpam-cracklib
+  apt: name=libpam-cracklib state=latest force=yes
+
+- name: Copy common-password file
+  copy: src=common-password dest="/etc/pam.d/common-password" mode=0644 force=yes
+
+- name: Create folder lightdm.conf.d
+  command: mkdir -p /etc/lightdm/lightdm.conf.d
+
+- name: Copy my-custom-config file
+  copy: src=50-my-custom-config.conf dest="/etc/lightdm/lightdm.conf.d/50-my-custom-config.conf" mode=0755 force=yes
+
+- name: Configure ssh on firewall
+  command: /usr/sbin/ufw allow ssh
+
+- name: Enable firewall
+  command: /usr/sbin/ufw enable
+
+- name: Install unattended upgrades
+  apt: name=unattended-upgrades state=latest force=yes
+
+- name: Copy unattended-upgrades config
+  copy: src=50unattended-upgrades dest="/etc/apt/apt.conf.d/50unattended-upgrades" mode=0644 force=yes
+
+- name: Copy periodic config
+  copy: src=10periodic dest="/etc/apt/apt.conf.d/10periodic" mode=664 force=yes
+
+- name: Copy release-updates config
+  copy: src=release-upgrades dest="/etc/update-manager/release-upgrades" mode=0644 force=yes

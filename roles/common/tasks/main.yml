@@ -6,28 +6,28 @@
 - name: Install prerequisites for PPA management
   apt: name={{ item }} state=latest force=yes
   with_items:
-    - "{{ pkg_prerequisites }}"
+    - "{{ common_pkg_prerequisites }}"
 
 - name: Add PPAs for common packages
   apt_repository: repo={{ item }} update_cache=yes
   with_items:
-    - "{{ ppa_repositories }}"
+    - "{{ common_ppa_repositories }}"
 
 - name: Update system repositories
   apt: update_cache=yes
 
-- name: Upgrade system
-  apt: upgrade=full
-
 - name: Install common packages
   package: name={{ item }} state=latest
   with_items:
-    - "{{ system_pkgs }}"
-    - "{{ browser_pkgs }}"
+    - "{{ common_system_pkgs }}"
+    - "{{ common_browser_pkgs }}"
 
 - name: Install softphone
   package: name={{ item }} state=latest
   with_items:
-    - "{{ softphone_pkgs }}"
+    - "{{ common_softphone_pkgs }}"
+
+
+
 
 
