@@ -5,6 +5,12 @@
   with_items:
     - "{{ clamav_av_packages }}"
 
+- name: Start clamav-freshclam - Database Updater
+  command: /etc/init.d/clamav-freshclam stop
+
+- name: Start the clamav-daemon
+  command: /etc/init.d/clamav-daemon stop
+
 - name: Update clamav databases
   command: freshclam
 

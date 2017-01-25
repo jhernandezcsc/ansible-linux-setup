@@ -1,14 +1,16 @@
 ---
 - name: Test distribution
-  fail: msg="Not Ubuntu, aborting"
-  when: ansible_distribution != "Ubuntu"
+  fail: msg="Not Ubuntu or invalid OS version, aborting..."
+  when:
+    - ansible_distribution != "Ubuntu"
+    - ansible_distribution_version != '14.04' or ansible_distribution_version != '16.04'
 
 - name: Install prerequisites for PPA management
   apt: name={{ item }} state=latest force=yes
   with_items:
     - "{{ common_pkg_prerequisites }}"
 
-- name: Add PPAs repositories for Ubuntu 14.04
+- name: Add PPAs repositories for Ubuntu 14.04 and 16.04
   apt_repository: repo={{ item }} update_cache=yes
   with_items:
     - "{{ common_ppa_repositories14 }}"
@@ -21,12 +23,12 @@
 
 - name: Add sflphone trusty repos manually for version 16.04
   blockinfile:
-    path: /etc/apt/sources.list
+    destfile: /etc/apt/sources.list
     block: |
       ## trusty repositories for SFLPhone
       deb http://ppa.launchpad.net/savoirfairelinux/ppa/ubuntu trusty main
       deb-src http://ppa.launchpad.net/savoirfairelinux/ppa/ubuntu trusty main
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
 - name: Update system repositories
   apt: update_cache=yes
@@ -37,11 +39,24 @@
     - "{{ common_system_pkgs }}"
     - "{{ common_browser_pkgs }}"
 
-- name: Install softphone
-  package: name={{ item }} state=latest
+- name: Install softphone software (SFLPhone for ubuntu 14 / TWINKLE for ubuntu 16)
+  apt:
+    name: "{{ item }}"
+    state: latest
+    install_recommends: yes
+    force: yes
   with_items:
-    - "{{ common_softphone_pkgs }}"
+    - "{{ common_softphone_pkgs14 }}"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
+
+  apt:
+    name: "{{ item }}"
+    state: latest
+    install_recommends: yes
+    force: yes
+  with_items:
+    - "{{ common_softphone_pkgs16 }}"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
 
 

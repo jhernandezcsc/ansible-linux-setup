@@ -1,9 +1,9 @@
 ---
-- name: Download Teamviwer version 10
-  get_url: url="{{ tviewer_url }}" dest="{{ tviewer_downloads_prefix }}/teamviewer_i386.deb"
+#- name: Download Teamviwer version 10
+#  get_url: url="{{ tviewer_url }}" dest="{{ tviewer_downloads_prefix }}/teamviewer_i386.deb"
 
-#- name: Copy Tviewer installationfile
-#  copy: src=teamviewer_i386.deb dest="{{ tviewer_downloads_prefix }}" mode=0775 force=yes
+- name: Copy Tviewer installationfile
+  copy: src=teamviewer_i386.deb dest="{{ tviewer_downloads_prefix }}" mode=0775 force=yes
 
 - name: Install Teamviwer
   apt: deb="{{ tviewer_downloads_prefix }}/teamviewer_i386.deb"
