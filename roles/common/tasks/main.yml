@@ -8,10 +8,25 @@
   with_items:
     - "{{ common_pkg_prerequisites }}"
 
-- name: Add PPAs for common packages
+- name: Add PPAs repositories for Ubuntu 14.04
   apt_repository: repo={{ item }} update_cache=yes
   with_items:
-    - "{{ common_ppa_repositories }}"
+    - "{{ common_ppa_repositories14 }}"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
+
+  apt_repository: repo={{ item }} update_cache=yes
+  with_items:
+    - "{{ common_ppa_repositories16 }}"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
+
+- name: Add sflphone trusty repos manually for version 16.04
+  blockinfile:
+    path: /etc/apt/sources.list
+    block: |
+      ## trusty repositories for SFLPhone
+      deb http://ppa.launchpad.net/savoirfairelinux/ppa/ubuntu trusty main
+      deb-src http://ppa.launchpad.net/savoirfairelinux/ppa/ubuntu trusty main
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
 - name: Update system repositories
   apt: update_cache=yes
@@ -26,6 +41,7 @@
   package: name={{ item }} state=latest
   with_items:
     - "{{ common_softphone_pkgs }}"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
 
 
 

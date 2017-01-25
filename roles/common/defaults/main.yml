@@ -4,9 +4,12 @@ common_pkg_prerequisites:
   - software-properties-common
   - aptitude
 
-common_ppa_repositories:
-  - ppa:libreoffice/libreoffice-5-2
+common_ppa_repositories14:
+  - ppa:libreoffice/ppa
   - ppa:savoirfairelinux
+
+common_ppa_repositories16:
+  - ppa:libreoffice/ppa
 
 common_system_pkgs:
   - unetbootin
