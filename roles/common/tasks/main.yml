@@ -10,25 +10,20 @@
   with_items:
     - "{{ common_pkg_prerequisites }}"
 
-- name: Add PPAs repositories for Ubuntu 14.04 and 16.04
+- name: Add PPAs repositories for Ubuntu 14.04
   apt_repository: repo={{ item }} update_cache=yes
   with_items:
     - "{{ common_ppa_repositories14 }}"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
 
+- name: Add PPAs repositories for Ubuntu 16.04
   apt_repository: repo={{ item }} update_cache=yes
   with_items:
     - "{{ common_ppa_repositories16 }}"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
-- name: Add sflphone trusty repos manually for version 16.04
-  blockinfile:
-    destfile: /etc/apt/sources.list
-    block: |
-      ## trusty repositories for SFLPhone
-      deb http://ppa.launchpad.net/savoirfairelinux/ppa/ubuntu trusty main
-      deb-src http://ppa.launchpad.net/savoirfairelinux/ppa/ubuntu trusty main
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
+- name: Add canonical repositories
+  apt_repository: repo='deb http://archive.canonical.com/ubuntu {{ansible_distribution_release}} partner' state=present
 
 - name: Update system repositories
   apt: update_cache=yes
@@ -39,7 +34,7 @@
     - "{{ common_system_pkgs }}"
     - "{{ common_browser_pkgs }}"
 
-- name: Install softphone software (SFLPhone for ubuntu 14 / TWINKLE for ubuntu 16)
+- name: Installing softphone software SFLPhone if running ubuntu 14.04
   apt:
     name: "{{ item }}"
     state: latest
@@ -49,6 +44,7 @@
     - "{{ common_softphone_pkgs14 }}"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
 
+- name: Installing softphone software TWINKLE if running ubuntu 16.04
   apt:
     name: "{{ item }}"
     state: latest
@@ -58,7 +54,16 @@
     - "{{ common_softphone_pkgs16 }}"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
+- name: Download Chrome browser package
+  get_url:
+    url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+    dest: "/tmp/google_chrome.deb"
+    force: yes
 
+- name: Install chrome browser
+  apt:
+    deb: "/tmp/google_chrome.deb"
+    force: yes
 
 
 

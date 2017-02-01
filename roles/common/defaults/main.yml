@@ -21,6 +21,7 @@ common_system_pkgs:
 common_browser_pkgs:
   - chromium-browser
   - firefox
+  - gscan2pdf
 
 common_softphone_pkgs14:
   - sflphone-daemon
