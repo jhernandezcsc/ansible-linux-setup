@@ -2,13 +2,13 @@
 # Security tasks
 
 - name: Copy login config file
-  copy: src=login.defs dest="/etc/login.defs" mode=644 force=yes
+  copy: src=login.defs dest="/etc/login.defs" mode=644 force=yes backup=yes
 
 - name: Install libpam-cracklib
   apt: name=libpam-cracklib state=latest force=yes
 
 - name: Copy common-password file
-  copy: src=common-password dest="/etc/pam.d/common-password" mode=0644 force=yes
+  copy: src=common-password dest="/etc/pam.d/common-password" mode=0644 force=yes backup=yes
 
 - name: Create folder lightdm.conf.d
   command: mkdir -p /etc/lightdm/lightdm.conf.d
@@ -16,20 +16,33 @@
 - name: Copy my-custom-config file
   copy: src=50-my-custom-config.conf dest="/etc/lightdm/lightdm.conf.d/50-my-custom-config.conf" mode=0755 force=yes
 
-- name: Configure ssh on firewall
-  command: /usr/sbin/ufw allow ssh
+- name: Modify ufw default
+  replace:
+    dest: /etc/default/ufw
+    regexp: '^IPV6=yes$'
+    replace: 'IPV6=no'
+    backup: yes
 
-- name: Enable firewall
-  command: /usr/sbin/ufw enable
+#- name: Enable firewall
+- block:
+  - ufw: rule=allow name=OpenSSH port=ssh
+  - ufw: rule=limit port=ssh
+  - ufw: state=enabled policy=allow
+
+#- name: Disable IPv6 iptables
+- iptables: chain="INPUT" policy="DROP" ip_version="ipv6"
+- iptables: chain="FORWARD" policy="DROP" ip_version="ipv6"
+- iptables: chain="OUTPUT" policy="DROP" ip_version="ipv6"
 
 - name: Install unattended upgrades
   apt: name=unattended-upgrades state=latest force=yes
 
 - name: Copy unattended-upgrades config
-  copy: src=50unattended-upgrades dest="/etc/apt/apt.conf.d/50unattended-upgrades" mode=0644 force=yes
+  copy: src=50unattended-upgrades dest="/etc/apt/apt.conf.d/50unattended-upgrades" mode=0644 force=yes backup=yes
 
 - name: Copy periodic config
-  copy: src=10periodic dest="/etc/apt/apt.conf.d/10periodic" mode=664 force=yes
+  copy: src=10periodic dest="/etc/apt/apt.conf.d/10periodic" mode=664 force=yes backup=yes
 
 - name: Copy release-updates config
-  copy: src=release-upgrades dest="/etc/update-manager/release-upgrades" mode=0644 force=yes
+  copy: src=release-upgrades dest="/etc/update-manager/release-upgrades" mode=0644 force=yes backup=yes
+

@@ -15,10 +15,13 @@ common_system_pkgs:
   - unetbootin
   - openjdk-8-jdk
   - openjdk-8-jre
+  - ubuntu-restricted-extras
+  - ubuntu-restricted-addons
 
 common_browser_pkgs:
   - chromium-browser
   - firefox
+  - gscan2pdf
 
 common_softphone_pkgs14:
   - sflphone-daemon
