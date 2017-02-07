@@ -9,7 +9,7 @@ Tested on Ubuntu 14.04 64bits, patches are welcome.
 
 Clone this repo to your Ansible roles directory
 
-    git clone https://github.com/jhernandezcsc/ansible-linux-setup.git
+    git clone https://github.com/jhernandezcsc/ansible-ubuntu-config-jlh.git
 
 
 ## Usage
@@ -30,34 +30,37 @@ Example Playbook:
 
 ## Important notes
 
-This playbook has been tested on a local virutal machine environment running Ubuntu 14.04 64bits.
+This playbook has been tested on a local virutal machines running Ubuntu 14.04 and 16.04 64bits.
 Installation packages and configuration are organized in roles as instalaltion steps.
 
 To execute this playbook the destination PC should be accessible via SSH (This means that the IP,
-cscadmin login and ssh service need to be set).
+cscadmin/csraadmin account and ssh service need to be set).
 
 This playbook assumes the following installation files are going to be included into the files folder
   - roles/teamviewer/files/teamviewer_i386.deb
 
-The destination hosts will be rebooted during the installation of this playbook, after the installation is finished ensure
-that the default cscadmin password has been removed.
+The destination hosts will be rebooted during the installation of this playbook, after the installation is 
+finished ensure that the default cscadmin password has been removed.
 
 After running this playbook, the workstation will be deployed with the following packages:
   - Unetbootin
-  - openjdk 7
-  - Libreoffice 5.1
-  - Teamviewer
+  - openjdk 7 for ubuntu 14.04
+  - openjdk 8 for ubuntu 16.04
+  - Libreoffice 5.2
+  - Teamviewer 10
   - Clamtk
-  - SFLPhone Client
+  - SFLPhone Client for ubuntu 14.04
+  - Twinkle for ubuntu 16.04
   - AdobeFlash pluggin
   - AdobeReader
-  - It will also be configured with the required security settigns to comply with password and security policies..
+  - It will also be configured with the required security settigns to comply with csra standars.
 
 Example Playbook run:
 
 A typical run of this playbook might look like this, but could vary based on your local ~/.ssh/config and DNS.
 
-     ansible-playbook -i wks-inv linux-setup.yml -u cscadmin -k -K
+     - ansible-playbook -i wks-inv linux-setup.yml -u cscadmin -k -K
+     - ansible-playbook -i wks-inv linux-setup.yml -u csraadmin -k -K
 
 ## Contributing
 
