@@ -32,26 +32,25 @@
   package: name={{ item }} state=latest
   with_items:
     - "{{ common_system_pkgs }}"
-    - "{{ common_browser_pkgs }}"
 
-- name: Installing softphone software SFLPhone if running ubuntu 14.04
+- name: Installing software for workstations running ubuntu 14.04
   apt:
     name: "{{ item }}"
     state: latest
     install_recommends: yes
     force: yes
   with_items:
-    - "{{ common_softphone_pkgs14 }}"
+    - "{{ system_pkgs_14 }}"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
 
-- name: Installing softphone software TWINKLE if running ubuntu 16.04
+- name: Installing software for workstations running ubuntu 16.04
   apt:
     name: "{{ item }}"
     state: latest
     install_recommends: yes
     force: yes
   with_items:
-    - "{{ common_softphone_pkgs16 }}"
+    - "{{ system_pkgs_16 }}"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
 - name: Download Chrome browser package

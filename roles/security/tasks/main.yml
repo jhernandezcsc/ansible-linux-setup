@@ -11,7 +11,10 @@
   copy: src=common-password dest="/etc/pam.d/common-password" mode=0644 force=yes backup=yes
 
 - name: Create folder lightdm.conf.d
-  command: mkdir -p /etc/lightdm/lightdm.conf.d
+  file:
+    path: /etc/lightdm/lightdm.conf.d
+    state: directory
+    mode: 0755
 
 - name: Copy my-custom-config file
   copy: src=50-my-custom-config.conf dest="/etc/lightdm/lightdm.conf.d/50-my-custom-config.conf" mode=0755 force=yes
