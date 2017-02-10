@@ -1,5 +1,9 @@
 [vm-ubuntu]
+<<<<<<< HEAD
 192.168.0.115
+=======
+localhost
+>>>>>>> e7ad47c8f6086428cde9d1d930f3d2c2431c9a41
 
 [uio-wks]
 192.168.100.4
