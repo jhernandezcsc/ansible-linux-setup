@@ -12,22 +12,24 @@ common_ppa_repositories16:
   - ppa:libreoffice/ppa
 
 common_system_pkgs:
+  - chromium-browser
+  - firefox
+  - gscan2pdf
+
+system_pkgs_14:
+  - unetbootin
+  - openjdk-7-jdk
+  - openjdk-7-jre
+  - ubuntu-restricted-extras
+  - ubuntu-restricted-addons
+  - sflphone-gnome
+  - sflphone-plugins
+
+system_pkgs_16:
   - unetbootin
   - openjdk-8-jdk
   - openjdk-8-jre
   - ubuntu-restricted-extras
   - ubuntu-restricted-addons
-
-common_browser_pkgs:
-  - chromium-browser
-  - firefox
-  - gscan2pdf
-
-common_softphone_pkgs14:
-  - sflphone-daemon
-  - sflphone-gnome-video
-  - sflphone-plugins
-
-common_softphone_pkgs16:
   - twinkle
 
